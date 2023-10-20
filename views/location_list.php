@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Liste des Locations</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -39,12 +41,20 @@
             padding: 10px;
             text-align: left;
         }
+        .delete-button {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <h1>Liste des Locations</h1>
     <div class="container">
-        <table>
+    <table id="myTable" class="display">
+        <!-- <table> -->
             <thead>
                 <tr>
                     <th>ID</th>
@@ -53,6 +63,7 @@
                     <th>Date de Début</th>
                     <th>Date de Fin</th>
                     <th>Créé le</th>
+                    <th>action</th>
                 </tr>
             </thead>
             <tbody>
@@ -64,10 +75,19 @@
                         <td><?php echo $location['date_debut']; ?></td>
                         <td><?php echo $location['date_fin']; ?></td>
                         <td><?php echo $location['created_at']; ?></td>
+                        <td>     <td><a class="delete-button" href="index.php?action=deleteLocation&location_id=<?php echo $location['id']; ?>">Supprimer</a>
+</td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+</script>
 </body>
 </html>

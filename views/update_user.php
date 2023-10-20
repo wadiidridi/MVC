@@ -11,11 +11,12 @@
             padding: 0;
         }
         .container {
-            width: 50%;
+            width: 60%;
+            max-width: 400px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
             border-radius: 8px;
             text-align: center;
         }
@@ -41,6 +42,7 @@
         label {
             display: block;
             font-weight: bold;
+            margin-top: 10px;
         }
         input[type="text"], input[type="email"], input[type="password"] {
             width: 100%;
@@ -48,6 +50,7 @@
             margin-bottom: 20px;
             border: 1px solid #ccc;
             border-radius: 4px;
+            font-size: 16px;
         }
         input[type="file"] {
             display: none; /* Hide the file input */
@@ -60,9 +63,10 @@
             border-radius: 4px;
             cursor: pointer;
             margin-bottom: 20px;
+            font-size: 16px;
         }
         .upload-icon {
-            font-size: 24px;
+            font-size: 20px;
             margin-right: 10px;
         }
         .image-preview {
@@ -84,6 +88,7 @@
             padding: 10px 20px;
             border-radius: 4px;
             cursor: pointer;
+            font-size: 16px;
         }
         button[type="submit"]:hover {
             background-color: #0056b3;
@@ -121,30 +126,46 @@
 
     <form method="post" enctype="multipart/form-data">
         <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
-        <input type="file" id="image" name="image">
+        <p id="image-name">Aucune image sélectionnée</p>
+        <input type="file" id="image" name="image" accept="image/*">
         <label class="upload-button" for="image"><span class="upload-icon">+</span>Changer l'image de profil</label>
-      
-      
+
         <div class="image-preview">
-    <?php if (!empty($user['image'])) : ?>
-        <img src="public/<?php echo $user['image']; ?>?<?php echo time(); ?>" alt="Image de profil">
-    <?php else : ?>
-        <p>Aucune image</p>
-    <?php endif; ?>
-</div>
+            <?php if (!empty($user['image'])) : ?>
+                <img src="public/<?php echo $user['image']; ?>?<?php echo time(); ?>" alt="Image de profil">
+            <?php else : ?>
+                <p>Aucune image</p>
+            <?php endif; ?>
+        </div>
 
         <label for="name">Nom :</label>
         <input type="text" id="name" name="name" value="<?php echo $user['name']; ?>">
         <label for="mail">Adresse e-mail :</label>
         <input type="email" id="mail" name="mail" value="<?php echo $user['mail']; ?>">
-        <label for="password">Nouveau mot de passe :</label>
+        <label for="password">    <i class="fa fa-lock"></i> Nouveau mot de passe :
+</label>
         <input type="password" id="password" name="password">
-        
-        <!-- Add an image input -->
-        
-        
+
         <button type="submit">Enregistrer</button>
     </form>
 </div>
+<script>
+    // Sélectionnez l'élément d'entrée de type fichier par son ID
+    const imageInput = document.getElementById('image');
+    // Sélectionnez l'élément <p> pour afficher le nom du fichier
+    const imageNameParagraph = document.getElementById('image-name');
+
+    // Écoutez l'événement "change" sur l'élément d'entrée de type fichier
+    imageInput.addEventListener('change', function () {
+        // Vérifiez s'il y a un fichier sélectionné
+        if (imageInput.files && imageInput.files[0]) {
+            // Mettez à jour le texte de l'élément <p> avec le nom du fichier
+            imageNameParagraph.textContent = 'Nom du fichier : ' + imageInput.files[0].name;
+        } else {
+            // Si aucun fichier n'est sélectionné, affichez "Aucune image sélectionnée"
+            imageNameParagraph.textContent = 'Aucune image sélectionnée';
+        }
+    });
+</script>
 </body>
 </html>

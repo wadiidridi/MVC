@@ -48,9 +48,9 @@
             margin-top: 20px; /* Ajout de la marge pour afficher le tableau correctement */
         }
 
-        table, th, td {
+        /* table, th, td {
             border: 1px solid black;
-        }
+        } */
 
         th, td {
             padding: 10px;
@@ -90,11 +90,13 @@
 </head>
 <body>
 <div class="sidebar">
-    <a href="../views/dashboard.php">Profil</a>
-    <a href="../index.php?action=read">users</a>
-    <a href="../index.php?action=readcars">Cars</a>
-    <a href="../index.php?action=createCar">new Cars</a>
-    <a href="../index.php?action=logout">Déconnexion</a>
+<a href="../views/dashboard.php">Profil</a>
+        <a href="../index.php?action=read">users</a>
+<a href="../index.php?action=readcars">Cars</a>
+<a href="../index.php?action=readLocations">Location</a>
+<a href="../index.php?action=createLocation">new Location</a>
+<a href="../index.php?action=createCar">new Cars</a><!-- ... Votre contenu précédent ... -->
+<a href="../index.php?action=logout">Déconnexion</a>
 </div>
 <div class="content">
     <!-- <a class="home-button" href="views/acce.php">Home</a> -->

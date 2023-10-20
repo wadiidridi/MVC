@@ -1,6 +1,6 @@
 <?php
 require 'config/database.php'; // Inclure le fichier de configuration
-require 'models/UserModel.php'; // Inclure le modèle
+require 'models/LocationModel.php'; // Inclure le modèle
 
 class LocationController {
     private $model;
@@ -39,26 +39,26 @@ class LocationController {
     
 //         require 'views/login.php';
 //     }
-//     public function deleteUser($userId) {
-//         // Vérifiez ici si l'utilisateur actuel a les autorisations pour supprimer un utilisateur
+    public function deleteLocation($locationId) {
+        // Vérifiez ici si l'utilisateur actuel a les autorisations pour supprimer un utilisateur
     
-//         if ($this->model->deleteUser($userId)) {
-//             // Suppression réussie, redirigez vers la liste des utilisateurs
-//             header("Location: index.php?action=read");
-//             exit();
-//         } else {
-//             // Erreur lors de la suppression
-//             $errorMessage = "Erreur lors de la suppression de l'utilisateur.";
-//             echo $errorMessage;
-//             die($errorMessage);
-//         }
-//     }
+        if ($this->model->deleteLocation($locationId)) {
+            // Suppression réussie, redirigez vers la liste des utilisateurs
+            header("Location: index.php?action=readLocations");
+            exit();
+        } else {
+            // Erreur lors de la suppression
+            $errorMessage = "Erreur lors de la suppression de l'utilisateur.";
+            echo $errorMessage;
+            die($errorMessage);
+        }
+    }
     
 public function readLocations() {
     $locationModel = new LocationModel($this->conn);
     $locations = $locationModel->getLocations();
 
-    require 'views/locations_list.php'; 
+    require 'views/location_list.php'; 
 }
 
 //     public function my_profile_read() {
@@ -113,49 +113,47 @@ public function readLocations() {
 //     }
     
     
-    
-//     public function createUser() {
-//         if ($_SERVER["REQUEST_METHOD"] === "POST") {
-//             if (isset($_POST["mail"]) && isset($_POST["password"])) {
-//                 $name = $_POST["name"];
+public function createLocation() {
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        if (isset($_POST["voiture_id"]) && isset($_POST["personne_id"])) {
+            $voiture_id = $_POST["voiture_id"];
+            $personne_id = $_POST["personne_id"];
+            $date_debut = $_POST["date_debut"];
+            $date_fin = $_POST["date_fin"];
 
-//                 $mail = $_POST["mail"];
-//                 $password = password_hash($_POST["password"], PASSWORD_BCRYPT);
-                
-//                 // Initialisez $image à null
-//                 $image = null;
-    
-//                 // Vérifiez si un fichier image a été téléchargé
-//                 if (isset($_FILES['image']) && $_FILES['image']['size'] > 0) {
-//                     echo "Nom du fichier: " . $_FILES['image']['name'] . "<br>";
-//                     echo "Type de fichier: " . $_FILES['image']['type'] . "<br>";
-//                     echo "Taille du fichier: " . $_FILES['image']['size'] . " octets<br>";
-//                     echo "Emplacement temporaire: " . $_FILES['image']['tmp_name'] . "<br>";
-                    
-//                     // Récupérez l'image
-//                     $image=basename($_FILES['image']['name']) ;
-//                      move_uploaded_file($_FILES['image']['tmp_name'],'public/'.$image);
-//                 } else {
-//                     echo "Aucun fichier image téléchargé ou fichier vide.<br>";
-//                 }
-    
-//                 $userModel = new UserModel($this->conn);
-    
-//                 if ($userModel->createUser($name, $mail, $password, $image)) {
-//                     header("Location: index.php?action=login");
-//                     exit();
-//                 } else {
-//                     $errorMessage = "Erreur lors de la création de l'utilisateur : " . $this->conn->error;
-//                     echo $errorMessage;
-//                     die($errorMessage);
-//                 }
-//             }
-//         } else {
-//             include 'views/create_user.php';
-//         }
-//     }
-    
-    
+            // Vérifiez si un fichier image a été téléchargé
+            // if (isset($_FILES["image"]["tmp_name"]) && !empty($_FILES["image"]["tmp_name"])) {
+            //     $image = $_FILES["image"]["name"]; // Nom du fichier
+            //     $image_tmp = $_FILES["image"]["tmp_name"]; // Emplacement temporaire du fichier
+
+            //     // Vérifiez si le fichier a été téléchargé avec succès
+            //     if (is_uploaded_file($image_tmp)) {
+            //         // Déplacez le fichier téléchargé vers l'emplacement souhaité
+            //         move_uploaded_file($image_tmp, 'public/' . $image);
+            //     } else {
+            //         // Gérez les erreurs de téléchargement d'image
+            //         echo "Erreur lors du téléchargement de l'image.";
+            //         return; // Sortez de la méthode en cas d'erreur
+            //     }
+            // } else {
+            //     $image = null; // Aucune image n'a été téléchargée
+            // }
+
+            $locationModel = new LocationModel($this->conn);
+
+            if ($locationModel->createLocation($voiture_id, $personne_id ,$date_debut,$date_fin)) {
+                header("Location: index.php?action=readLocations");
+                exit();
+            } else {
+                $errorMessage = "Erreur lors de la création d'un location : " . $this->conn->error;
+                echo $errorMessage;
+                die($errorMessage);
+            }
+        }
+    } else {
+        include 'views/create_location.php';
+    }
+}
 
 //     public function dashboard() {
 //         if (!isset($_SESSION['user_id'])) {

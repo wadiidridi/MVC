@@ -48,9 +48,19 @@ switch ($action) {
                 $carController->deleteCar($_GET['car_id']);
              break;
              case 'readLocations':
-                $carController->readLocations();
+                $locationController->readLocations();
              break;
-             
+
+             case 'deleteLocation':
+                $locationId = isset($_GET['location_id']) ? $_GET['location_id'] : null;
+                if ($locationId) {
+                    $locationController->deleteLocation($locationId);
+                }            
+                 break;
+                 case 'createLocation':
+                    $locationController->createLocation();
+                 break;
+                 
     // Ajoutez d'autres cas pour d'autres actions
     default:
         // Action par défaut si aucune action spécifique n'est fournie

@@ -31,7 +31,7 @@
         }
 
         th {
-            background-color: #3498db;
+            background-color: grey;
             color: white;
         }
 
@@ -45,7 +45,7 @@
 
         /* Style pour le bouton d'ajout de voiture */
         .add-button {
-            background-color: #4CAF50;
+            background-color: grey;
             color: white;
             border: none;
             padding: 10px 20px;
@@ -73,7 +73,7 @@
             border-radius: 4px;
         }
         .delete-button {
-            background-color: #f44336;
+            background-color: grey;
             color: white;
             border: none;
             padding: 5px 10px;
@@ -83,6 +83,7 @@
     </style>
 </head>
 <body>
+    
 <a class="home-button" href="views/acce.php">Home</a>
 
     <h1>Liste des voitures</h1>
@@ -111,8 +112,13 @@
                     <td><?php echo $car['prix']; ?></td>
                     <td><?php echo $car['statut']; ?></td>
                     <!-- Ajoutez d'autres colonnes ici -->
+                  
                     <td><a class="delete-button" href="index.php?action=deleteCar&car_id=<?php echo $car['id']; ?>">Supprimer</a>
-</td>
+                 <br><br>
+                 <a class="btn btn-primary" href="index.php?action=createLocation&voiture_id=<?php echo $car['id']; ?>">Réserver</a>
+
+
+                </td>
 
                 </tr>
             <?php endforeach; ?>

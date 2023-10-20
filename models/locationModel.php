@@ -20,19 +20,19 @@ class LocationModel {
 //             return null; // Aucun utilisateur trouvé
 //         }
 //     }
-//     public function createUser($name, $mail, $password, $image) {
-//         $sql = "INSERT INTO personne ( name , mail, password, image) VALUES (?, ?, ?, ?)";
-//         $stmt = $this->conn->prepare($sql);
+    public function createLocation($voiture_id, $personne_id,$date_debut,$date_fin) {
+        $sql = "INSERT INTO location ( voiture_id , personne_id, date_debut, date_fin) VALUES (?, ? ,?, ?)";
+        $stmt = $this->conn->prepare($sql);
     
-//         // Mettez à jour la chaîne de type pour inclure "b" pour le champ BLOB
-//         $stmt->bind_param("ssss",$name, $mail, $password, $image);
+        // Mettez à jour la chaîne de type pour inclure "b" pour le champ BLOB
+        $stmt->bind_param("ssdd",$voiture_id, $personne_id,$date_debut, $date_fin);
     
-//         if ($stmt->execute()) {
-//             return true;
-//         } else {
-//             die("Erreur lors de l'insertion : " . $stmt->error);
-//         }
-//     }
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            die("Erreur lors de l'insertion : " . $stmt->error);
+        }
+    }
 //     public function updateUser($userId, $name, $mail, $password, $newImage) {
 //         // Récupérez l'ancienne image
 //         $oldImage = $this->getUserImageById($userId);
@@ -78,17 +78,17 @@ class LocationModel {
 //     }
     
 
-//     public function deleteUser($userId) {
-//         $sql = "DELETE FROM personne WHERE id = ?";
-//         $stmt = $this->conn->prepare($sql);
-//         $stmt->bind_param("i", $userId);
+    public function deletelocation($userId) {
+        $sql = "DELETE FROM location WHERE id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $locationId);
     
-//         if ($stmt->execute()) {
-//             return true; // Suppression réussie
-//         } else {
-//             return false; // Erreur lors de la suppression
-//         }
-//     }
+        if ($stmt->execute()) {
+            return true; // Suppression réussie
+        } else {
+            return false; // Erreur lors de la suppression
+        }
+    }
 //     public function getUserById($userId) {
 //         $sql = "SELECT * FROM personne WHERE id = ?";
 //         $stmt = $this->conn->prepare($sql);
