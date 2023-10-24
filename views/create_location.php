@@ -57,7 +57,7 @@
 
             <label for="voiture_id">ID de la personne :</label>
 
-            <input type="text" name="personne_id" id="personne_id" value="<?php echo unserialize($_COOKIE['user'])['id']; ?>" required>
+            <input type="text"  name="personne_id" id="personne_id" value="<?php echo unserialize($_COOKIE['user'])['id']; ?>" required>
 
             <label for="voiture_id">ID de la voiture :</label>
           
@@ -69,10 +69,10 @@
 }
 ?>
 
-<input type="text" name="voiture_id" id="voiture_id" required value="<?php echo $voiture_id; ?>">
+<input type="text"  name="voiture_id" id="voiture_id" required value="<?php echo $voiture_id; ?>">
 
 <label for="date_debut date debut"></label>
-<input type="datetime-local" name="date_debut" id="date_debut" value="2023-10-11T15:30">
+<input type="date" name="date_debut" id="date_debut" >
             <!-- Ajoutez d'autres champs pour d'autres informations liées à la location si nécessaire -->
 
             <button type="submit">Créer</button>

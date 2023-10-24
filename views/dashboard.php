@@ -53,23 +53,43 @@
     </style>    
 </head>
 <body>
+<div class="container">
+    <h1>Mise à jour de l'utilisateur</h1>
+
+    <?php if (!empty($successMessage)) : ?>
+        <div class="alert alert-success">
+            <?php echo $successMessage; ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if (!empty($errorMessage)) : ?>
+        <div class="alert alert-danger">
+            <?php echo $errorMessage; ?>
+        </div>
+    <?php endif; ?>
+
 <form method="post" enctype="multipart/form-data">
-        <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
+        <!-- <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
         <input type="file" id="image" name="image">
         <label class="upload-button" for="image"><span class="upload-icon">+</span>Changer l'image de profil</label>
-      
-      
+       -->
+
         <div class="image-preview">
     <div class="container">
         <h1>Profil de l'Utilisateur</h1>
 
         <img class="profile-image" src="../public/<?php echo unserialize($_COOKIE['user'])['image']; ?>" alt="Image de profil">
         <p>Adresse e-mail : <?php echo unserialize($_COOKIE['user'])['mail']; ?></p>
-        <p>name : <?php echo unserialize($_COOKIE['user'])['name']; ?></p>
+        <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
+        <input type="email" id="mail" name="mail" value="<?php echo unserialize($_COOKIE['user'])['mail']; ?>">
 
-        <a href="../index.php?action=read">Voir les utilisateurs</a>
-        <a href="logout.php">Déconnexion</a>
+        <button type="submit">Enregistrer</button>
+
+
+        <!-- <a href="../index.php?action=read">Voir les utilisateurs</a>
+        <a href="logout.php">Déconnexion</a> -->
     </div>
+    </form>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
     <script>
         $(document).ready( function () {

@@ -26,7 +26,14 @@ class UserController {
                     $_SESSION['user_id'] = $user['id'];
                    setcookie('user',serialize($user),time()+'3600','/');
                     $success_message = "Connexion réussie !";
+                    if ($user['Role'] == 'admin') {
+                        // Redirigez l'administrateur vers la page d'accueil de l'admin
                     header("Location: views/acce.php");
+                } else {
+                        // Redirigez l'utilisateur normal vers la page d'accueil de l'utilisateur
+                        header("Location: views/user_acceuil.php");
+                    }
+                    // header("Location: views/acce.php");
                 //  header("Location: index.php?action=my_profile_read");
 
                     exit();
@@ -89,20 +96,24 @@ class UserController {
             $userId = isset($_POST['user_id']) ? $_POST['user_id'] : null;
             $name = isset($_POST['name']) ? $_POST['name'] : null;
             $mail = isset($_POST['mail']) ? $_POST['mail'] : null;
-            $image = isset($_POST['image']) ? $_POST['image'] : null;
-
+            $oldImage = isset($_POST['old_image']) ? $_POST['old_image'] : null;
+    
             $password = isset($_POST['password']) ? password_hash($_POST['password'], PASSWORD_BCRYPT) : null;
     
-            // Traitement de l'image
-            $image = null;
+            // Traitement de la nouvelle image
+            $newImage = null;
             if (isset($_FILES['image']) && $_FILES['image']['size'] > 0) {
-                $image = basename($_FILES['image']['name']);
-                move_uploaded_file($_FILES['image']['tmp_name'], 'public/' . $image);
+                $newImage = basename($_FILES['image']['name']);
+                move_uploaded_file($_FILES['image']['tmp_name'], 'public/' . $newImage);
             }
     
             if ($userId && $name && $mail) {
                 $userModel = new UserModel($this->conn);
-                $success = $userModel->updateUser($userId, $name, $mail, $password, $image);
+                // Supprimez l'ancienne image s'il y en avait une
+                if ($oldImage) {
+                    unlink('public/' . $oldImage);
+                }
+                $success = $userModel->updateUser($userId, $name, $mail, $password, $newImage);
     
                 if ($success) {
                     $successMessage = "Utilisateur mis à jour avec succès.";
@@ -125,25 +136,16 @@ class UserController {
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             if (isset($_POST["mail"]) && isset($_POST["password"])) {
                 $name = $_POST["name"];
-
                 $mail = $_POST["mail"];
                 $password = password_hash($_POST["password"], PASSWORD_BCRYPT);
-                
+    
                 // Initialisez $image à null
                 $image = null;
     
                 // Vérifiez si un fichier image a été téléchargé
                 if (isset($_FILES['image']) && $_FILES['image']['size'] > 0) {
-                    echo "Nom du fichier: " . $_FILES['image']['name'] . "<br>";
-                    echo "Type de fichier: " . $_FILES['image']['type'] . "<br>";
-                    echo "Taille du fichier: " . $_FILES['image']['size'] . " octets<br>";
-                    echo "Emplacement temporaire: " . $_FILES['image']['tmp_name'] . "<br>";
-                    
-                    // Récupérez l'image
-                    $image=basename($_FILES['image']['name']) ;
-                     move_uploaded_file($_FILES['image']['tmp_name'],'public/'.$image);
-                } else {
-                    echo "Aucun fichier image téléchargé ou fichier vide.<br>";
+                    $image = basename($_FILES['image']['name']);
+                    move_uploaded_file($_FILES['image']['tmp_name'], 'public/' . $image);
                 }
     
                 $userModel = new UserModel($this->conn);
@@ -161,7 +163,6 @@ class UserController {
             include 'views/create_user.php';
         }
     }
-    
     
 
     public function dashboard() {

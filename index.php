@@ -22,12 +22,16 @@ switch ($action) {
         case 'updateUser':
             $userController->updateUser();
             break;    
+            case 'updateUser':
+                $userController->dashboard();
+                break;   
         case 'login':
             $userController->login();
             break;
             case 'logout':
                 $userController->logout();
                 break;
+                
             case 'deleteUser':
                 // Assurez-vous de vérifier et de récupérer l'ID de l'utilisateur à supprimer
                 $userId = isset($_GET['user_id']) ? $_GET['user_id'] : null;
@@ -42,8 +46,12 @@ switch ($action) {
                         $carController->createCar();
                         break;
                   case 'login':
+
                $userController->login();
             break;
+            case 'updateCar':
+                $carController->updateCar();
+             break;
             case 'deleteCar':
                 $carController->deleteCar($_GET['car_id']);
              break;
@@ -59,14 +67,16 @@ switch ($action) {
                  break;
                  case 'createLocation':
                     $locationController->createLocation();
-                 break;
+                 break;  
+               
                  
     // Ajoutez d'autres cas pour d'autres actions
     default:
         // Action par défaut si aucune action spécifique n'est fournie
         // Par exemple, rediriger vers une page d'accueil.
         // header("Location: index.php");
-        include 'views/acceuil.php' ;
+        // include 'views/acceuil.php' ;
+        include 'index.html' ;
         break;
 }
 ?>

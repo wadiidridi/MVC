@@ -21,11 +21,11 @@ class UserModel {
         }
     }
     public function createUser($name, $mail, $password, $image) {
-        $sql = "INSERT INTO personne ( name , mail, password, image) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO personne (name, mail, password, image) VALUES (?, ?, ?, ?)";
         $stmt = $this->conn->prepare($sql);
     
         // Mettez à jour la chaîne de type pour inclure "b" pour le champ BLOB
-        $stmt->bind_param("ssss",$name, $mail, $password, $image);
+        $stmt->bind_param("ssss", $name, $mail, $password, $image);
     
         if ($stmt->execute()) {
             return true;

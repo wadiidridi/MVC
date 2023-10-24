@@ -38,16 +38,18 @@
     </style>
 </head>
 <body>   
-    <div class="sidebar">
-        <a href="../views/dashboard.php">Profil</a>
-        <a href="../index.php?action=read">users</a>
-<a href="../index.php?action=readcars">Cars</a>
-<a href="../index.php?action=readLocations">Location</a>
-<a href="../index.php?action=createLocation">new Location</a>
-<a href="../index.php?action=createCar">new Cars</a><!-- ... Votre contenu précédent ... -->
-<a href="../index.php?action=logout">Déconnexion</a>
-<!-- ... Autres éléments de votre tableau de bord ... -->
-    </div>
+<div class="sidebar">
+    <a href="../index.php?action=updateUser">Profil</a>
+    <a href="../index.php?action=read">users</a>
+    <a href="../index.php?action=readcars">Cars</a>
+    <a href="../index.php?action=readLocations">Location</a>
+    <a href="../index.php?action=createLocation">new Location</a>
+    <a href="../index.php?action=createCar">new Cars</a>
+    <!-- <button class="action-button update-button" data-user-id="<?php echo $user['id']; ?>">Modifier</button> -->
+    <a href="../index.php?action=logout">Déconnexion</a>
+    <!-- ... Autres éléments de votre tableau de bord ... -->
+</div>
+
     <div class="content">
         <!-- Contenu de la page d'accueil -->
     </div>

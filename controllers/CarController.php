@@ -81,42 +81,57 @@ class CarController {
     //     require 'views/dashboard.php'; 
     // }
     
-    // public function updateUser() {
-    //     $successMessage = "";
-    //     $errorMessage = "";
-    
-    //     if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    //         $userId = isset($_POST['user_id']) ? $_POST['user_id'] : null;
-    //         $mail = isset($_POST['mail']) ? $_POST['mail'] : null;
-    
-    //         if ($userId && $mail) {
-    //             $userModel = new UserModel($this->conn);
-    //             $success = $userModel->updateUser($userId, $mail); // Mettez à jour l'utilisateur ici
-    
-    //             if ($success) {
+// CarController.php
 
-    //                 header("Location: ../index.php?action=read");
-    //                 exit(); // Assurez-vous de quitter le script après la redirection
+// CarController.php
 
-    //                 // $successMessage = "Utilisateur mis à jour avec succès.";
-    //             } else {
-    //                 $errorMessage = "Erreur lors de la mise à jour de l'utilisateur.";
-    //             }
-    //         }
-    //     }
-    //     // header("loacation : ../index.php?action=read");
+public function updateCar() {
+    $successMessage = "";
+    $errorMessage = "";
 
-    //     $userId = isset($_GET['user_id']) ? $_GET['user_id'] : null;
-    //     $userModel = new UserModel($this->conn);
-    //     $user = $userModel->getUserById($userId);
-    
-    //     require 'views/update_user.php';
-    // }
-    
-    
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        $carId = isset($_POST['car_id']) ? $_POST['car_id'] : null;
+        $marque = isset($_POST['marque']) ? $_POST['marque'] : null;
+        $model = isset($_POST['model']) ? $_POST['model'] : null;
+        $prix = isset($_POST['prix']) ? $_POST['prix'] : null;
+
+        if ($carId && $marque && $model && $prix) {
+            $carModel = new CarModel($this->conn);
+
+            // Gérez également la mise à jour de l'image ici
+            if (isset($_FILES["image"]["tmp_name"]) && !empty($_FILES["image"]["tmp_name"])) {
+                $image = $_FILES["image"]["name"];
+                $image_tmp = $_FILES["image"]["tmp_name"];
+
+                if (is_uploaded_file($image_tmp)) {
+                    move_uploaded_file($image_tmp, 'public/' . $image);
+                    // Assurez-vous que le chemin du fichier image est enregistré dans la base de données
+                } else {
+                    $errorMessage = "Erreur lors du téléchargement de l'image.";
+                }
+            }
+
+            $success = $carModel->updateCar($carId, $marque, $model, $prix, $image);
+
+            if ($success) {
+                header("Location: ../index.php?action=readcars");
+                exit();
+            } else {
+                $errorMessage = "Erreur lors de la mise à jour de la voiture.";
+            }
+        }
+    }
+
+    $carId = isset($_GET['car_id']) ? $_GET['car_id'] : null;
+    $carModel = new CarModel($this->conn);
+    $car = $carModel->getCarById($carId);
+
+    require 'views/update_car.php';
+}
+
     
  // Partie de votre code dans la méthode createCar
-public function createCar() {
+ public function createCar() {
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if (isset($_POST["marque"]) && isset($_POST["model"])) {
             $marque = $_POST["marque"];
@@ -124,27 +139,106 @@ public function createCar() {
             $description = $_POST["description"];
             $prix = $_POST["prix"];
 
-            // Vérifiez si un fichier image a été téléchargé
-            if (isset($_FILES["image"]["tmp_name"]) && !empty($_FILES["image"]["tmp_name"])) {
-                $image = $_FILES["image"]["name"]; // Nom du fichier
-                $image_tmp = $_FILES["image"]["tmp_name"]; // Emplacement temporaire du fichier
-
-                // Vérifiez si le fichier a été téléchargé avec succès
-                if (is_uploaded_file($image_tmp)) {
-                    // Déplacez le fichier téléchargé vers l'emplacement souhaité
-                    move_uploaded_file($image_tmp, 'public/' . $image);
-                } else {
-                    // Gérez les erreurs de téléchargement d'image
-                    echo "Erreur lors du téléchargement de l'image.";
-                    return; // Sortez de la méthode en cas d'erreur
-                }
-            } else {
-                $image = null; // Aucune image n'a été téléchargée
-            }
 
             $carModel = new CarModel($this->conn);
 
-            if ($carModel->createCar($marque, $model, $description, $prix, $image)) {
+            try{ 
+
+
+                $car_id=$carModel->createCar($marque, $model, $description, $prix); 
+               
+               
+                $imageNames = array();
+
+                // Vérifiez si des fichiers image ont été téléchargés
+                if (isset($_FILES["image"]) && is_array($_FILES["image"]["tmp_name"])) {
+                    foreach ($_FILES["image"]["tmp_name"] as $key => $tmp_name) {
+                        if (!empty($tmp_name)) {
+                            $image_name = $_FILES["image"]["name"][$key];
+                            $image_tmp = $_FILES["image"]["tmp_name"][$key];
+    
+                            // Vérifiez si le fichier a été téléchargé avec succès
+                            if (is_uploaded_file($image_tmp)) {
+                                // Générez un nom de fichier unique pour éviter les conflits
+                                $unique_name = uniqid() . "_" . $image_name;
+                               
+    
+                                // Déplacez le fichier téléchargé vers l'emplacement souhaité
+                                move_uploaded_file($image_tmp, 'public/car_photos/' . $unique_name);
+                                $carModel->createImage($unique_name,$car_id);
+                            } else {
+                                // Gérez les erreurs de téléchargement d'image
+                                echo "Erreur lors du téléchargement de l'image $image_name.";
+                                return; // Sortez de la méthode en cas d'erreur
+                            }
+                        }
+                    }
+                }
+    
+               
+               
+               
+               
+               
+                header("Location: index.php?action=readcars");
+                exit();
+            } catch (Exception) {
+                $errorMessage = "Erreur lors de la création d'un voiture : " . $this->conn->error;
+                echo $errorMessage;
+                die($errorMessage);
+            }
+
+            // Créez un tableau pour stocker les noms des fichiers téléchargés
+   
+            // Maintenant, $imageNames contient les noms des fichiers téléchargés, que vous pouvez stocker en base de données
+
+           
+        }
+    } else {
+        include 'views/create_car.php';
+    }
+}
+
+public function createImage() {
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        if (isset($_POST["voiture_id"]) && isset($_POST["model"])) {
+            $marque = $_POST["marque"];
+            $model = $_POST["model"];
+            $description = $_POST["description"];
+            $prix = $_POST["prix"];
+
+            // Créez un tableau pour stocker les noms des fichiers téléchargés
+            $imageNames = array();
+
+            // Vérifiez si des fichiers image ont été téléchargés
+            if (isset($_FILES["image"]) && is_array($_FILES["image"]["tmp_name"])) {
+                foreach ($_FILES["image"]["tmp_name"] as $key => $tmp_name) {
+                    if (!empty($tmp_name)) {
+                        $image_name = $_FILES["image"]["name"][$key];
+                        $image_tmp = $_FILES["image"]["tmp_name"][$key];
+
+                        // Vérifiez si le fichier a été téléchargé avec succès
+                        if (is_uploaded_file($image_tmp)) {
+                            // Générez un nom de fichier unique pour éviter les conflits
+                            $unique_name = uniqid() . "_" . $image_name;
+                            $imageNames[] = $unique_name;
+
+                            // Déplacez le fichier téléchargé vers l'emplacement souhaité
+                            move_uploaded_file($image_tmp, 'public/' . $unique_name);
+                        } else {
+                            // Gérez les erreurs de téléchargement d'image
+                            echo "Erreur lors du téléchargement de l'image $image_name.";
+                            return; // Sortez de la méthode en cas d'erreur
+                        }
+                    }
+                }
+            }
+
+            // Maintenant, $imageNames contient les noms des fichiers téléchargés, que vous pouvez stocker en base de données
+
+            $carModel = new CarModel($this->conn);
+
+            if ($carModel->createCar($marque, $model, $description, $prix, $imageNames)) {
                 header("Location: index.php?action=readcars");
                 exit();
             } else {

@@ -45,35 +45,39 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px; /* Ajout de la marge pour afficher le tableau correctement */
+            margin-top: 20px;
         }
-
-        /* table, th, td {
-            border: 1px solid black;
-        } */
 
         th, td {
             padding: 10px;
             text-align: left;
         }
 
-        .delete-button {
-            background-color: #f44336;
-            color: white;
+        /* Boutons d'action */
+        .action-button {
+            background-color: #007BFF;
+            color: #fff;
             border: none;
             padding: 5px 10px;
             cursor: pointer;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .action-button:hover {
+            background-color: #0056b3;
+        }
+
+        .delete-button {
+            background-color: grey;
         }
 
         .update-button {
             background-color: blue;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            cursor: pointer;
         }
 
-        /* Style pour le bouton de retour à la page d'accueil */
+        /* Bouton de retour à la page d'accueil */
         .home-button {
             background-color: #4CAF50;
             color: white;
@@ -85,21 +89,19 @@
             left: 20px;
             border-radius: 4px;
         }
-
     </style>
 </head>
 <body>
 <div class="sidebar">
-<a href="../views/dashboard.php">Profil</a>
-        <a href="../index.php?action=read">users</a>
-<a href="../index.php?action=readcars">Cars</a>
-<a href="../index.php?action=readLocations">Location</a>
-<a href="../index.php?action=createLocation">new Location</a>
-<a href="../index.php?action=createCar">new Cars</a><!-- ... Votre contenu précédent ... -->
-<a href="../index.php?action=logout">Déconnexion</a>
+    <a href="../views/dashboard.php">Profil</a>
+    <a href="../index.php?action=read">users</a>
+    <a href="../index.php?action=readcars">Cars</a>
+    <a href="../index.php?action=readLocations">Location</a>
+    <a href="../index.php?action=createLocation">new Location</a>
+    <a href="../index.php?action=createCar">new Cars</a>
+    <a href="../index.php?action=logout">Déconnexion</a>
 </div>
 <div class="content">
-    <!-- <a class="home-button" href="views/acce.php">Home</a> -->
     <h1>Liste des utilisateurs</h1>
     <br><br><br><br><br>
     <?php if (isset($users) && is_array($users)) : ?>
@@ -108,9 +110,9 @@
             <tr>
                 <th>ID</th>
                 <th>Nom</th>
+                <th>Image</th>
                 <th>Adresse e-mail</th>
                 <th>Date</th>
-                <th>Action</th>
                 <th>Action</th>
             </tr>
             </thead>
@@ -119,15 +121,21 @@
                 <tr>
                     <td><?php echo $user['id']; ?></td>
                     <td><?php echo $user['name']; ?></td>
+                    <td>
+                        <div class="image-preview">
+                            <?php if (!empty($user['image'])) : ?>
+                                <img src="public/<?php echo $user['image']; ?>?<?php echo time(); ?>"
+                                     alt="Image de profil" style="max-width: 70px; max-height: 70px;">
+                            <?php else : ?>
+                                <p>Aucune image</p>
+                            <?php endif; ?>
+                        </div>
+                    </td>
                     <td><?php echo $user['mail']; ?></td>
                     <td><?php echo $user['date']; ?></td>
                     <td>
-                    
-
-                        <button class="delete-button" data-user-id="<?php echo $user['id']; ?>">Supprimer</button>
-                    </td>
-                    <td>
-                        <button class="update-button" data-user-id="<?php echo $user['id']; ?>">Modifier</button>
+                        <button class="action-button delete-button" data-user-id="<?php echo $user['id']; ?>">Supprimer</button>
+                        <button class="action-button update-button" data-user-id="<?php echo $user['id']; ?>">Modifier</button>
                     </td>
                 </tr>
             <?php endforeach; ?>

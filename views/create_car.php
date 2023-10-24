@@ -62,8 +62,7 @@
             <input type="text" name="description" id="description" required>
             <label for="prix">prix :</label>
             <input type="text" name="prix" id="prix" required>
-            <label for="image">Image:</label>
-            <input type="file" name="image">
+            <input type="file" name="image[]" id="image" multiple>
 
             <!-- Ajoutez d'autres champs pour les informations de la voiture -->
 

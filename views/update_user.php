@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Mise à jour de l'utilisateur</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -125,30 +127,24 @@
     <?php endif; ?>
 
     <form method="post" enctype="multipart/form-data">
-        <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
-        <p id="image-name">Aucune image sélectionnée</p>
-        <input type="file" id="image" name="image" accept="image/*">
-        <label class="upload-button" for="image"><span class="upload-icon">+</span>Changer l'image de profil</label>
+        <!-- <?php echo unserialize($_COOKIE['user'])['image']; ?> -->
+    <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
+    <input type="hidden" name="old_image" value="<?php echo unserialize($_COOKIE['user'])['image']; ?>>">
+    <p id="image-name">Aucune image sélectionnée</p>
+    <input type="file" id="image" name="image" accept="image/*">
+    <label class="upload-button" for="image"><span class="upload-icon">+</span>Changer l'image de profil</label>
+    <div class="image-preview">
+        <img src="public/<?php echo unserialize($_COOKIE['user'])['image']; ?>" alt="Image de profil">
+    </div>
+    <label for="name">Nom :
+    <input type="text" id="name" name="name" placeholder="<?php echo unserialize($_COOKIE['user'])['name']; ?>" >
+    <label for="mail">Adresse e-mail :</label>
+    <input type="email" id="mail" name="mail" placeholder="<?php echo unserialize($_COOKIE['user'])['mail']; ?>">
+    <label for="password">Mot de passe :</label>
+    <input type="password" id="password" name="password">
+    <button type="submit">Enregistrer</button>
+</form>
 
-        <div class="image-preview">
-            <?php if (!empty($user['image'])) : ?>
-                <img src="public/<?php echo $user['image']; ?>?<?php echo time(); ?>" alt="Image de profil">
-            <?php else : ?>
-                <p>Aucune image</p>
-            <?php endif; ?>
-        </div>
-
-        <label for="name">Nom :</label>
-        <input type="text" id="name" name="name" value="<?php echo $user['name']; ?>">
-        <label for="mail">Adresse e-mail :</label>
-        <input type="email" id="mail" name="mail" value="<?php echo $user['mail']; ?>">
-        <label for="password">    <i class="fa fa-lock"></i> Nouveau mot de passe :
-</label>
-        <input type="password" id="password" name="password">
-
-        <button type="submit">Enregistrer</button>
-    </form>
-</div>
 <script>
     // Sélectionnez l'élément d'entrée de type fichier par son ID
     const imageInput = document.getElementById('image');
