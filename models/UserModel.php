@@ -35,18 +35,7 @@ class UserModel {
     }
     public function updateUser($userId, $name, $mail, $password, $newImage) {
         // Récupérez l'ancienne image
-        $oldImage = $this->getUserImageById($userId);
-    
-        if ($newImage !== null) {
-            // Une nouvelle image a été téléchargée, gérez le téléchargement de la nouvelle image ici
-            // Assurez-vous de supprimer l'ancienne image si elle existe
-            if ($oldImage !== null) {
-                unlink('public/' . $oldImage); // Supprimez l'ancienne image du répertoire
-            }
-    
-            // Enregistrez la nouvelle image
-            move_uploaded_file($newImage, 'public/' . $newImage);
-        }
+      
     
         $sql = "UPDATE personne SET name = ?, mail = ?, password = ?, image = ? WHERE id = ?";
         $stmt = $this->conn->prepare($sql);

@@ -47,32 +47,31 @@
             cursor: pointer;
             border-radius: 5px;
         }
+        .home-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
     <h1>Créer une Location</h1>
+    <a class="home-button" href="../views/acce.php">Retour</a>
+
     <div class="container">
-        <form method="POST" action="index.php?action=createLocation">
+        <form method="POST" action="index.php?action=searchFreecars">
         <!-- <p>name : <?php echo unserialize($_COOKIE['user'])['id']; ?></p> -->
 
-            <label for="voiture_id">ID de la personne :</label>
-
-            <input type="text"  name="personne_id" id="personne_id" value="<?php echo unserialize($_COOKIE['user'])['id']; ?>" required>
-
-            <label for="voiture_id">ID de la voiture :</label>
-          
-          <?php
-           $voiture_id = null;
-
-           if (isset($_GET['voiture_id'])) {
-           $voiture_id = $_GET['voiture_id'];
-}
-?>
-
-<input type="text"  name="voiture_id" id="voiture_id" required value="<?php echo $voiture_id; ?>">
-
+         
 <label for="date_debut date debut"></label>
-<input type="date" name="date_debut" id="date_debut" >
+<input type="datetime-local" name="date_debut" id="date_debut" >
+<input type="datetime-local" name="date_fin" id="date_debut" >
             <!-- Ajoutez d'autres champs pour d'autres informations liées à la location si nécessaire -->
 
             <button type="submit">Créer</button>

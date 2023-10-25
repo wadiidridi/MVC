@@ -81,7 +81,7 @@ public function updateCar($carId, $marque, $model, $prix, $image) {
 }
 
 public function getCarById($carId) {
-    $query = "SELECT * FROM voiture WHERE id = ?";
+    $query = "SELECT * FROM voiture WHERE voiture_id = ?";
     $stmt = $this->conn->prepare($query);
     $stmt->bind_param("i", $carId);
 
@@ -93,6 +93,59 @@ public function getCarById($carId) {
     }
 
     return null; // Retournez null si la voiture n'est pas trouvée
+}
+public function getCarImages($carId) {
+    $images = array();
+
+    // Remplacez 'image-voiture' par le nom de votre table d'images associées aux voitures
+    $sql = "SELECT * FROM image_voiture WHERE voiture_id = ?";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bind_param("i", $carId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    while ($row = $result->fetch_assoc()) {
+        $images[] = $row;
+    }
+
+    return $images;
+}
+
+public  function getAllPhotos($carId) {
+
+  
+    $sql = "SELECT * FROM image_voiture WHERE voiture_id = ?";
+
+    $stmt = $this->conn->prepare($sql);
+
+    $stmt->bind_param("i", $carId); // Assuming car_id is an integer
+
+
+
+    $photos = [];
+
+
+
+    if ($stmt->execute()) {
+
+        $result = $stmt->get_result();
+
+        while ($row = $result->fetch_assoc()) {
+
+            $photos[] = $row;
+
+        }
+
+    } else {
+
+        // Handle the error, e.g., return an empty array or log the error
+
+    }
+
+
+
+    return $photos;
+
 }
 
     public function deleteCar($carId) {

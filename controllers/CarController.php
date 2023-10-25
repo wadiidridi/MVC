@@ -39,6 +39,29 @@ class CarController {
     
     //     require 'views/login.php';
     // }
+    public function viewImages($carId) {
+        // Assurez-vous que l'utilisateur est connecté (ajoutez cette vérification si nécessaire)
+    
+        // Chargez le modèle des voitures
+        $carModel = new CarModel($this->conn);
+    
+        // Récupérez les informations sur la voiture en fonction de l'ID
+        $car = $carModel->getCarById($carId);
+    
+        if (!$car) {
+            // Gérez le cas où la voiture n'est pas trouvée (par exemple, affichez un message d'erreur)
+        } else {
+            // Chargez le modèle des images de voiture
+            $CarModel = new CarModel($this->conn);
+    
+            // Récupérez les images associées à la voiture
+            $carImages = $CarModel->getCarImages($carId);
+    
+            // Chargez la vue pour afficher les images associées à la voiture
+            require 'views/view_car_images.php';
+        }
+    }
+    
     public function deleteCar($carId) {
         // Vérifiez ici si l'utilisateur actuel a les autorisations pour supprimer un utilisateur
     
@@ -68,6 +91,17 @@ class CarController {
         // require 'views/dashboard.php'; // Passer la liste des utilisateurs à la vue
         // Passer la liste des utilisateurs à la vue
     }  
+
+
+    public function getPhotos($carid) {
+    
+    
+        $carModel = new CarModel($this->conn);
+        $carsPhotosList = $carModel->getAllPhotos($carid);
+    
+        require 'views/car_photo.php'; 
+       
+    } 
     // public function my_profile_read() {
     // //      if (!isset($_SESSION['user_id'])) {
     // //    header("Location: login.php");

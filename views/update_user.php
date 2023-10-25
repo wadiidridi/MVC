@@ -126,24 +126,27 @@
         </div>
     <?php endif; ?>
 
-    <form method="post" enctype="multipart/form-data">
-        <!-- <?php echo unserialize($_COOKIE['user'])['image']; ?> -->
+    <form method="POST" enctype="multipart/form-data" action="index.php?action=updateUser">
     <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
-    <input type="hidden" name="old_image" value="<?php echo unserialize($_COOKIE['user'])['image']; ?>>">
-    <p id="image-name">Aucune image sélectionnée</p>
     <input type="file" id="image" name="image" accept="image/*">
     <label class="upload-button" for="image"><span class="upload-icon">+</span>Changer l'image de profil</label>
     <div class="image-preview">
-        <img src="public/<?php echo unserialize($_COOKIE['user'])['image']; ?>" alt="Image de profil">
+        <img src="public/<?php echo  $user['image']; ?>" alt="Image de profil">
     </div>
-    <label for="name">Nom :
-    <input type="text" id="name" name="name" placeholder="<?php echo unserialize($_COOKIE['user'])['name']; ?>" >
-    <label for="mail">Adresse e-mail :</label>
-    <input type="email" id="mail" name="mail" placeholder="<?php echo unserialize($_COOKIE['user'])['mail']; ?>">
+    <div>
+  
+</div>
+
+    <label for="name">Nom :</label>
+    <input type="text" id="name" name="name" value="<?php echo $user['name']; ?>">
+    
+    <label for="mail">mail :</label>
+    <input type="email" id="mail" name="mail" value="<?php echo $user['mail']; ?>">
     <label for="password">Mot de passe :</label>
     <input type="password" id="password" name="password">
     <button type="submit">Enregistrer</button>
 </form>
+
 
 <script>
     // Sélectionnez l'élément d'entrée de type fichier par son ID

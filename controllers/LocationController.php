@@ -115,33 +115,17 @@ public function readLocations() {
     
 public function createLocation() {
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
-        if (isset($_POST["voiture_id"]) && isset($_POST["personne_id"])) {
+       
             $voiture_id = $_POST["voiture_id"];
-            $personne_id = $_POST["personne_id"];
             $date_debut = $_POST["date_debut"];
             $date_fin = $_POST["date_fin"];
+            $prix = $_POST["prix"];
 
-            // Vérifiez si un fichier image a été téléchargé
-            // if (isset($_FILES["image"]["tmp_name"]) && !empty($_FILES["image"]["tmp_name"])) {
-            //     $image = $_FILES["image"]["name"]; // Nom du fichier
-            //     $image_tmp = $_FILES["image"]["tmp_name"]; // Emplacement temporaire du fichier
-
-            //     // Vérifiez si le fichier a été téléchargé avec succès
-            //     if (is_uploaded_file($image_tmp)) {
-            //         // Déplacez le fichier téléchargé vers l'emplacement souhaité
-            //         move_uploaded_file($image_tmp, 'public/' . $image);
-            //     } else {
-            //         // Gérez les erreurs de téléchargement d'image
-            //         echo "Erreur lors du téléchargement de l'image.";
-            //         return; // Sortez de la méthode en cas d'erreur
-            //     }
-            // } else {
-            //     $image = null; // Aucune image n'a été téléchargée
-            // }
+        $personne_id=unserialize($_COOKIE['user'])['id'];
 
             $locationModel = new LocationModel($this->conn);
 
-            if ($locationModel->createLocation($voiture_id, $personne_id ,$date_debut,$date_fin)) {
+            if ($locationModel->createLocation($voiture_id, $personne_id ,$date_debut,$date_fin,$prix)) {
                 header("Location: index.php?action=readLocations");
                 exit();
             } else {
@@ -150,7 +134,26 @@ public function createLocation() {
                 die($errorMessage);
             }
         }
-    } else {
+   
+    }
+
+
+
+public function search() {
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+ 
+            $date_debut = $_POST["date_debut"];
+            $date_fin = $_POST["date_fin"];
+
+        
+
+            $locationModel = new LocationModel($this->conn);
+
+            $cars=$locationModel->search($date_debut,$date_fin);
+            
+            include 'views/freecars.php';
+        }
+    else {
         include 'views/create_location.php';
     }
 }

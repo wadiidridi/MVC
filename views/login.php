@@ -6,7 +6,8 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background: url('views/voiture.png') no-repeat center center fixed;
+            background-size: contain;
             margin: 0;
             padding: 0;
             display: flex;
@@ -15,7 +16,7 @@
             min-height: 100vh;
         }
         .container {
-            background-color: #fff;
+            background-color: rgba(255, 255, 255, 0.7); /* Couleur blanche semi-transparente */
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
             padding: 20px;
@@ -78,7 +79,6 @@
             <input type="password" name="password" value="" required>
             <button type="submit">Se connecter</button>
             <br>        <a href="index.php?action=createUser">S'inscrire</a>
-
         </form>
     </div>
     <script>
@@ -88,7 +88,7 @@
         if (errorMessage) {
             document.getElementById('error-message').style.display = 'block';
         } else if (successMessage) {
-            document.getElementById('success-message').style display = 'block';
+            document.getElementById('success-message').style.display = 'block';
         }
     </script>
 </body>

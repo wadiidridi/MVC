@@ -135,7 +135,7 @@
                     <td><?php echo $user['date']; ?></td>
                     <td>
                         <button class="action-button delete-button" data-user-id="<?php echo $user['id']; ?>">Supprimer</button>
-                        <button class="action-button update-button" data-user-id="<?php echo $user['id']; ?>">Modifier</button>
+                        <!-- <button class="action-button update-button" data-user-id="<?php echo $user['id']; ?>">Modifier</button> -->
                     </td>
                 </tr>
             <?php endforeach; ?>

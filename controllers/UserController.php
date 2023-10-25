@@ -26,13 +26,15 @@ class UserController {
                     $_SESSION['user_id'] = $user['id'];
                    setcookie('user',serialize($user),time()+'3600','/');
                     $success_message = "Connexion réussie !";
-                    if ($user['Role'] == 'admin') {
-                        // Redirigez l'administrateur vers la page d'accueil de l'admin
                     header("Location: views/acce.php");
-                } else {
-                        // Redirigez l'utilisateur normal vers la page d'accueil de l'utilisateur
-                        header("Location: views/user_acceuil.php");
-                    }
+
+                //     if ($user['Role'] == 'admin') {
+                //         // Redirigez l'administrateur vers la page d'accueil de l'admin
+                //     header("Location: views/acce.php");
+                // } else {
+                //         // Redirigez l'utilisateur normal vers la page d'accueil de l'utilisateur
+                //         header("Location: views/user_acceuil.php");
+                //     }
                     // header("Location: views/acce.php");
                 //  header("Location: index.php?action=my_profile_read");
 
@@ -96,12 +98,11 @@ class UserController {
             $userId = isset($_POST['user_id']) ? $_POST['user_id'] : null;
             $name = isset($_POST['name']) ? $_POST['name'] : null;
             $mail = isset($_POST['mail']) ? $_POST['mail'] : null;
-            $oldImage = isset($_POST['old_image']) ? $_POST['old_image'] : null;
     
             $password = isset($_POST['password']) ? password_hash($_POST['password'], PASSWORD_BCRYPT) : null;
     
             // Traitement de la nouvelle image
-            $newImage = null;
+   $newImage='';
             if (isset($_FILES['image']) && $_FILES['image']['size'] > 0) {
                 $newImage = basename($_FILES['image']['name']);
                 move_uploaded_file($_FILES['image']['tmp_name'], 'public/' . $newImage);
@@ -110,9 +111,7 @@ class UserController {
             if ($userId && $name && $mail) {
                 $userModel = new UserModel($this->conn);
                 // Supprimez l'ancienne image s'il y en avait une
-                if ($oldImage) {
-                    unlink('public/' . $oldImage);
-                }
+          
                 $success = $userModel->updateUser($userId, $name, $mail, $password, $newImage);
     
                 if ($success) {
@@ -123,13 +122,12 @@ class UserController {
             }
         }
     
-        $userId = isset($_GET['user_id']) ? $_GET['user_id'] : null;
+        $userId = unserialize($_COOKIE['user'])['id'] ;
         $userModel = new UserModel($this->conn);
         $user = $userModel->getUserById($userId);
     
         require 'views/update_user.php';
     }
-    
     
     
     public function createUser() {

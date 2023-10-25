@@ -40,11 +40,14 @@
 <body>   
 <div class="sidebar">
     <a href="../index.php?action=updateUser">Profil</a>
-    <a href="../index.php?action=read">users</a>
-    <a href="../index.php?action=readcars">Cars</a>
+    <?php if(unserialize($_COOKIE[('user')])['Role']==='admin')
+   {echo " <a href='../index.php?action=read'>users</a>";
+    echo "<a href='../index.php?action=readcars'>Cars</a>";
+   echo " <a href='../index.php?action=createCar'>new Cars</a>";
+}
+?>
     <a href="../index.php?action=readLocations">Location</a>
-    <a href="../index.php?action=createLocation">new Location</a>
-    <a href="../index.php?action=createCar">new Cars</a>
+    <a href="../index.php?action=searchFreecars">new Location</a>
     <!-- <button class="action-button update-button" data-user-id="<?php echo $user['id']; ?>">Modifier</button> -->
     <a href="../index.php?action=logout">Déconnexion</a>
     <!-- ... Autres éléments de votre tableau de bord ... -->

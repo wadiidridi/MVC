@@ -20,12 +20,12 @@ class LocationModel {
 //             return null; // Aucun utilisateur trouvé
 //         }
 //     }
-    public function createLocation($voiture_id, $personne_id,$date_debut,$date_fin) {
-        $sql = "INSERT INTO location ( voiture_id , personne_id, date_debut, date_fin) VALUES (?, ? ,?, ?)";
+    public function createLocation($voiture_id, $personne_id,$date_debut,$date_fin,$prix) {
+        $sql = "INSERT INTO location ( voiture_id , personne_id, date_debut, date_fin,prix) VALUES (?, ? ,?, ?,?)";
         $stmt = $this->conn->prepare($sql);
     
         // Mettez à jour la chaîne de type pour inclure "b" pour le champ BLOB
-        $stmt->bind_param("ssdd",$voiture_id, $personne_id,$date_debut, $date_fin);
+        $stmt->bind_param("ssssd",$voiture_id, $personne_id,$date_debut, $date_fin,$prix);
     
         if ($stmt->execute()) {
             return true;
@@ -33,51 +33,32 @@ class LocationModel {
             die("Erreur lors de l'insertion : " . $stmt->error);
         }
     }
-//     public function updateUser($userId, $name, $mail, $password, $newImage) {
-//         // Récupérez l'ancienne image
-//         $oldImage = $this->getUserImageById($userId);
-    
-//         if ($newImage !== null) {
-//             // Une nouvelle image a été téléchargée, gérez le téléchargement de la nouvelle image ici
-//             // Assurez-vous de supprimer l'ancienne image si elle existe
-//             if ($oldImage !== null) {
-//                 unlink('public/' . $oldImage); // Supprimez l'ancienne image du répertoire
-//             }
-    
-//             // Enregistrez la nouvelle image
-//             move_uploaded_file($newImage, 'public/' . $newImage);
-//         }
-    
-//         $sql = "UPDATE personne SET name = ?, mail = ?, password = ?, image = ? WHERE id = ?";
-//         $stmt = $this->conn->prepare($sql);
-    
-//         // Bind les paramètres à mettre à jour, y compris la nouvelle image
-//         $stmt->bind_param("ssssi", $name, $mail, $password, $newImage, $userId);
-    
-//         if ($stmt->execute()) {
-//             return true;
-//         } else {
-//             die("Erreur lors de la mise à jour de l'utilisateur : " . $stmt->error);
-//         }
-//     }
-    
-    
-//     public function getUserImageById($userId) {
-//         $sql = "SELECT image FROM personne WHERE id = ?";
-//         $stmt = $this->conn->prepare($sql);
-//         $stmt->bind_param("i", $userId);
-//         $stmt->execute();
-//         $result = $stmt->get_result();
-    
-//         if ($result->num_rows > 0) {
-//             $row = $result->fetch_assoc();
-//             return $row['image'];
-//         } else {
-//             return null; // Aucune image trouvée pour cet utilisateur
-//         }
-//     }
-    
+    public function search($date_debut,$date_fin) {
+       $sql= "SELECT voiture.* FROM voiture
 
+        LEFT JOIN location ON voiture.voiture_id = location.voiture_id
+
+        WHERE location.voiture_id IS NULL OR location.date_fin < ? OR location.date_debut > ? 
+
+        OR voiture.voiture_id NOT IN (SELECT voiture_id FROM location )"; 
+        
+        
+        $stmt = $this->conn->prepare($sql);
+    
+        // Mettez à jour la chaîne de type pour inclure "b" pour le champ BLOB
+        $stmt->bind_param("ss",$date_debut, $date_fin);
+        $stmt->execute();
+          $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            $cars = array();
+            while ($row = $result->fetch_assoc()) {
+                $cars[] = $row;
+            }
+            return $cars;
+        } else {
+            return array(); // Aucun utilisateur trouvé
+        }
+    }
     public function deletelocation($userId) {
         $sql = "DELETE FROM location WHERE id = ?";
         $stmt = $this->conn->prepare($sql);

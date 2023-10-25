@@ -47,9 +47,22 @@
             cursor: pointer;
             border-radius: 5px;
         }
+        .home-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
+<a class="home-button" href="../views/acce.php">Retour</a>
+
     <h1>Créer une voiture</h1>
     <div class="container">
         <form method="POST" action="index.php?action=createCar" enctype="multipart/form-data">

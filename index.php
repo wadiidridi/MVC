@@ -65,9 +65,15 @@ switch ($action) {
                     $locationController->deleteLocation($locationId);
                 }            
                  break;
-                 case 'createLocation':
-                    $locationController->createLocation();
-                 break;  
+                 case 'searchFreecars':
+                    $locationController->search();
+                    break ;
+                    case 'createLocation':
+                        $locationController->createLocation();
+                     break;
+                         case 'photos':
+                            $carController->getPhotos($_GET['car_id']);
+                     break;  
                
                  
     // Ajoutez d'autres cas pour d'autres actions

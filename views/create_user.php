@@ -6,7 +6,8 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background: url('views/voiture.png') no-repeat center center fixed; /* Remplacez 'votre-image.jpg' par le chemin de votre image de fond */
+            background-size: contain;
             margin: 0;
             padding: 0;
             display: flex;
@@ -64,6 +65,11 @@
             display: none;
             margin-top: 10px;
         }
+        .container {
+    background-color: rgba(255, 255, 255, 0.7); /* Couleur blanche semi-transparente */
+    /* ... Autres styles ... */
+}
+
     </style>
 </head>
 <body>
@@ -87,7 +93,7 @@
 <input type="file" name="image" accept="image/*">
 
     <br>
-    <button type="submit">Créer l'utilisateur</button>
+    <button type="submit">Créer l'utilisateur</button><br><a href="index.php?action=login">Connect</a>
 </form>
 
     </div>
