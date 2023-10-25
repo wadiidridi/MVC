@@ -145,8 +145,6 @@ function goBack() {
                 <th>image</th>
                 <th>Description</th>
                 <th>Prix</th>
-                <th>Détails</th>
-                <td>Reserve</td>
 
                 <!-- Ajoutez d'autres colonnes si nécessaire -->
             </tr>
@@ -172,8 +170,8 @@ function goBack() {
                     <!-- Ajoutez d'autres colonnes ici -->
                   
                     <td>
-                    <a class="action-button update-button" href="index.php?action=updateCar&car_id=' . $car['voiture_id'] . '">image</a>;
-                    <a class="action-button delete-button" href="index.php?action=deleteCar&car_id=' . $car['voiture_id'] . '">Supprimer</a>
+                    <!-- <a class="action-button update-button" href="index.php?action=updateCar&car_id=' . $car['voiture_id'] . '">image</a>;
+                    <a class="action-button delete-button" href="index.php?action=deleteCar&car_id=' . $car['voiture_id'] . '">Supprimer</a> -->
     <?php
     // Vérifiez le rôle de l'utilisateur actuellement connecté (vous devez avoir un moyen de stocker le rôle de l'utilisateur)
     if (isset($_SESSION['user']) && $_SESSION['user']['Role'] === 'admin') {
@@ -183,7 +181,7 @@ function goBack() {
     }
     ?>
 </td>
-                <td>   <a class="action-button update-button" href="index.php?action=createLocation&voiture_id=<?php echo $car['voiture_id']; ?>">Réserver</a>
+                <!-- <td>   <a class="action-button update-button" href="index.php?action=createLocation&voiture_id=<?php echo $car['voiture_id']; ?>">Réserver</a> -->
 </td>
 
                 </tr>
